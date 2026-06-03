@@ -23,13 +23,15 @@ export default function QuizPage({ isQuizCompleted, completeQuiz, getQuizByIdOve
     return (
       <div className="text-center py-20">
         <p className="text-gray-500">퀴즈를 찾을 수 없습니다.</p>
-        <Link to="/curriculum" className="text-blue-600 hover:underline mt-2 inline-block">커리큘럼으로 돌아가기</Link>
+        <Link to={curriculumPath} className="text-blue-600 hover:underline mt-2 inline-block">커리큘럼으로 돌아가기</Link>
       </div>
     );
   }
 
   // ML과 CV 모듈 모두에서 찾기
   const module = allModules.find(m => String(m.id) === String(quiz.moduleId));
+  const isCV = opencvModules.some(m => String(m.id) === String(quiz.moduleId));
+  const curriculumPath = isCV ? '/curriculum-cv' : '/curriculum';
   const question = quiz.questions[current];
   const isCorrect = selected === question.answer;
   const score = answers.filter(Boolean).length;
@@ -69,7 +71,12 @@ export default function QuizPage({ isQuizCompleted, completeQuiz, getQuizByIdOve
   }
 
   const scorePercent = Math.round((score / quiz.questions.length) * 100);
-  const nextModule = module ? modules.find((m) => m.id === module.id + 1) : null;
+  // CV 모듈이면 CV 목록에서, ML이면 ML 목록에서 다음 모듈 탐색
+  const nextModule = module
+    ? (isCV
+        ? opencvModules.find(m => m.id === module.id.replace(/\d+$/, n => String(Number(n) + 1)))
+        : modules.find(m => m.id === module.id + 1))
+    : null;
 
   if (showResult) {
     return (
@@ -115,7 +122,7 @@ export default function QuizPage({ isQuizCompleted, completeQuiz, getQuizByIdOve
           </button>
           {nextModule ? (
             <Link
-              to={`/curriculum/${nextModule.id}`}
+              to={curriculumPath}
               className={`flex-1 flex items-center justify-center gap-2 py-3 ${headerBg} text-white rounded-xl text-sm font-medium hover:opacity-90 transition-opacity`}
             >
               다음 모듈로 <ChevronRight size={16} />

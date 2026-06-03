@@ -1,21 +1,24 @@
+import { useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { ChevronLeft, ChevronRight, CheckCircle2, Clock, BookOpen, Code2, BarChart2 } from 'lucide-react';
+import { ChevronLeft, ChevronRight, CheckCircle2, Clock, BookOpen, Code2, BarChart2, FolderOpen } from 'lucide-react';
 import { getLessonById, modules } from '../data/curriculum';
 import { codeExamples } from '../data/codeExamples';
 import DiagramRenderer from '../components/Diagram/DiagramRenderer';
 import CodePlayground from '../components/CodePlayground/CodePlayground';
 
-export default function LessonPage({ isLessonCompleted, completeLesson, getOpenCVLesson, opencvCodeExamples, mlCodeExamples }) {
+export default function LessonPage({ isLessonCompleted, completeLesson, getOpenCVLesson, opencvCodeExamples, mlCodeExamples, chapExamples }) {
   const { lessonId } = useParams();
   const navigate = useNavigate();
+  const [activeCodeTab, setActiveCodeTab] = useState(0);
+  const [selectedChapFile, setSelectedChapFile] = useState(0);
 
-  // ML 또는 OpenCV 강의 통합 조회
-  let result = getLessonById(lessonId);
-  let isCV = false;
-  if (!result && getOpenCVLesson) {
-    result = getOpenCVLesson(lessonId);
-    if (result) isCV = true;
-  }
+  // lessonId가 'cv'로 시작하면 OpenCV 강의
+  const isCV = typeof lessonId === 'string' && lessonId.startsWith('cv');
+
+  // ML 또는 OpenCV 강의 조회
+  const result = isCV
+    ? (getOpenCVLesson ? getOpenCVLesson(lessonId) : null)
+    : getLessonById(lessonId);
 
   if (!result) {
     return (
@@ -36,7 +39,16 @@ export default function LessonPage({ isLessonCompleted, completeLesson, getOpenC
   const nextLesson = currentIndex < allLessons.length - 1 ? allLessons[currentIndex + 1] : null;
   const isCompleted = isLessonCompleted(lessonId);
 
-  const codeExample = lesson.codeExampleId ? allCodeExamples[lesson.codeExampleId] : null;
+  // 단일 ID와 배열 ID 모두 지원
+  const codeExampleIds = lesson.codeExampleIds
+    || (lesson.codeExampleId ? [lesson.codeExampleId] : []);
+  const codeExampleList = codeExampleIds.map(id => allCodeExamples[id]).filter(Boolean);
+  const codeExample = codeExampleList[0] || null;
+
+  // 챕터 전체 예제 파일 목록 (chapExamples 에서 module.chapId로 조회)
+  const chapFileList = (chapExamples && module.chapId)
+    ? (chapExamples[module.chapId] || [])
+    : [];
 
   const colorMap = {
     blue: 'bg-blue-700', purple: 'bg-purple-700', green: 'bg-green-700',
@@ -53,7 +65,10 @@ export default function LessonPage({ isLessonCompleted, completeLesson, getOpenC
   return (
     <div className="animate-fade-in max-w-3xl mx-auto space-y-6">
       {/* 뒤로가기 */}
-      <Link to={`/curriculum`} className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-700">
+      <Link
+        to={isCV ? `/curriculum-cv/${module.id}` : `/curriculum/${module.id}`}
+        className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-700"
+      >
         <ChevronLeft size={16} /> {module.title}으로 돌아가기
       </Link>
 
@@ -95,12 +110,17 @@ export default function LessonPage({ isLessonCompleted, completeLesson, getOpenC
       )}
 
       {/* 코드 실습 */}
-      {codeExample && (
+      {codeExampleList.length > 0 && (
         <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
           <div className="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
             <div className="flex items-center gap-2">
               <Code2 size={18} className="text-gray-600" />
               <span className="font-bold text-gray-800">코드 실습</span>
+              {codeExampleList.length > 1 && (
+                <span className="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full font-medium">
+                  {codeExampleList.length}개
+                </span>
+              )}
             </div>
             <Link
               to="/playground"
@@ -109,14 +129,101 @@ export default function LessonPage({ isLessonCompleted, completeLesson, getOpenC
               플레이그라운드에서 더 보기 <ChevronRight size={13} />
             </Link>
           </div>
+
+          {/* 탭 (여러 예제일 때만 표시) */}
+          {codeExampleList.length > 1 && (
+            <div className="flex border-b border-gray-100 overflow-x-auto">
+              {codeExampleList.map((ex, i) => (
+                <button
+                  key={i}
+                  onClick={() => setActiveCodeTab(i)}
+                  className={`px-4 py-2.5 text-xs font-medium whitespace-nowrap border-b-2 transition-colors flex-shrink-0 ${
+                    activeCodeTab === i
+                      ? 'border-blue-500 text-blue-700 bg-blue-50'
+                      : 'border-transparent text-gray-500 hover:text-gray-700 hover:bg-gray-50'
+                  }`}
+                >
+                  {i === 0 ? '📘 개념 예제' : `📂 ${ex.title.split('—')[0].trim()}`}
+                </button>
+              ))}
+            </div>
+          )}
+
           <div className="p-4">
-            <CodePlayground
-              key={lesson.codeExampleId}
-              defaultCode={codeExample.code}
-              language={codeExample.language}
-              title={codeExample.title}
-              description={codeExample.description}
-            />
+            {codeExampleList[activeCodeTab] && (
+              <CodePlayground
+                key={`${lessonId}-${activeCodeTab}`}
+                defaultCode={codeExampleList[activeCodeTab].code}
+                language={codeExampleList[activeCodeTab].language}
+                title={codeExampleList[activeCodeTab].title}
+                description={codeExampleList[activeCodeTab].description}
+              />
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* 챕터 전체 예제 소스 파일 선택기 */}
+      {chapFileList.length > 0 && (
+        <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+          <div className="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <FolderOpen size={18} className="text-emerald-600" />
+              <span className="font-bold text-gray-800">교재 예제 소스 전체</span>
+              <span className="text-xs bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full font-medium">
+                {module.chapId} · {chapFileList.length}개
+              </span>
+            </div>
+            <span className="text-xs text-gray-400">파일 선택 후 실습</span>
+          </div>
+
+          {/* 파일 선택 드롭다운 */}
+          <div className="px-4 pt-3 pb-2 bg-gray-50 border-b border-gray-100">
+            <select
+              value={selectedChapFile}
+              onChange={e => setSelectedChapFile(Number(e.target.value))}
+              className="w-full text-sm border border-gray-300 rounded-lg px-3 py-2 bg-white text-gray-800 focus:outline-none focus:ring-2 focus:ring-emerald-400 font-mono"
+            >
+              {chapFileList.map((f, i) => (
+                <option key={f.id} value={i}>
+                  {f.filename}
+                </option>
+              ))}
+            </select>
+
+            {/* 파일 번호 빠른 선택 (작은 버튼 배열) */}
+            <div className="flex flex-wrap gap-1 mt-2">
+              {chapFileList.map((f, i) => {
+                const num = f.filename.match(/^(\d+)/)?.[1] || String(i+1);
+                return (
+                  <button
+                    key={f.id}
+                    onClick={() => setSelectedChapFile(i)}
+                    title={f.filename}
+                    className={`text-xs px-2 py-1 rounded font-mono transition-colors ${
+                      selectedChapFile === i
+                        ? 'bg-emerald-500 text-white'
+                        : 'bg-gray-200 text-gray-600 hover:bg-emerald-100'
+                    }`}
+                  >
+                    {num}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* 선택된 파일 코드 */}
+          <div className="p-4">
+            {chapFileList[selectedChapFile] && (
+              <CodePlayground
+                key={`chap-${module.chapId}-${selectedChapFile}`}
+                defaultCode={chapFileList[selectedChapFile].code}
+                language="python"
+                title={`${chapFileList[selectedChapFile].filename}`}
+                description={`${module.chapId} / ${chapFileList[selectedChapFile].filename}`}
+              />
+            )}
           </div>
         </div>
       )}

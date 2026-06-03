@@ -12,6 +12,7 @@ import { useProgress } from './hooks/useProgress';
 import { getOpenCVLessonById } from './data/curriculum_opencv';
 import { getOpenCVQuizById } from './data/quizzes_opencv';
 import { opencvCodeExamples } from './data/codeExamples_opencv';
+import { chapExamples } from './data/chapExamples_opencv';
 import { codeExamples as mlCodeExamples } from './data/codeExamples';
 import { getQuizById as getMLQuizById } from './data/quizzes';
 
@@ -52,6 +53,10 @@ export default function App() {
             <OpenCVCurriculumPage getModuleProgress={getModuleProgress}
               isLessonCompleted={isLessonCompleted} isQuizCompleted={isQuizCompleted}/>
           }/>
+          <Route path="/curriculum-cv/:moduleId" element={
+            <OpenCVCurriculumPage getModuleProgress={getModuleProgress}
+              isLessonCompleted={isLessonCompleted} isQuizCompleted={isQuizCompleted}/>
+          }/>
           <Route path="/lesson/:lessonId" element={
             <LessonPage
               isLessonCompleted={isLessonCompleted}
@@ -59,6 +64,7 @@ export default function App() {
               getOpenCVLesson={getOpenCVLessonById}
               opencvCodeExamples={opencvCodeExamples}
               mlCodeExamples={mlCodeExamples}
+              chapExamples={chapExamples}
             />
           }/>
           <Route path="/quiz/:quizId" element={

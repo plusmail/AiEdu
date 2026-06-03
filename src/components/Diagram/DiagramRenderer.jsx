@@ -22,6 +22,16 @@ import MorphologyOpsDiagram  from './MorphologyOpsDiagram';
 import GeomTransformDiagram  from './GeomTransformDiagram';
 import HoughTransformDiagram from './HoughTransformDiagram';
 import ArrayOpsDiagram      from './ArrayOpsDiagram';
+import ImageIODiagram        from './ImageIODiagram';
+import StatsDiagram          from './StatsDiagram';
+import Chap05Diagram         from './Chap05Diagram';
+import Chap06Diagram         from './Chap06Diagram';
+import Chap07Diagram         from './Chap07Diagram';
+import Chap08Diagram         from './Chap08Diagram';
+import Chap09Diagram         from './Chap09Diagram';
+import Chap10Diagram         from './Chap10Diagram';
+import Chap11Diagram         from './Chap11Diagram';
+import Chap12Diagram         from './Chap12Diagram';
 
 const DIAGRAMS = {
   // 기존
@@ -49,6 +59,19 @@ const DIAGRAMS = {
   'geom-transform':  { component: GeomTransformDiagram,  title: '기하학적 변환',             subtitle: '이동·크기·회전·어파인 인터랙티브' },
   'hough-transform': { component: HoughTransformDiagram, title: '허프 변환',                subtitle: 'ρ-θ 파라미터 공간 투표 과정' },
   'array-ops':       { component: ArrayOpsDiagram,       title: 'OpenCV 배열 연산',         subtitle: '포화 연산·비트 연산·통계·채널 처리' },
+  'image-io':        { component: ImageIODiagram,         title: '영상 파일 처리 (I/O)',      subtitle: 'imread · imwrite · VideoCapture · VideoWriter' },
+  'cv-stats':        { component: StatsDiagram,           title: 'OpenCV 통계·행렬 연산',    subtitle: 'minMaxLoc · meanStdDev · countNonZero · gemm' },
+  'cv-chap05':       { component: Chap05Diagram,          title: 'Ch05 실습 핵심 개념',       subtitle: '비트연산·차분오버플로·정규화·reduce·GEMM·연립방정식' },
+  'cv-chap06':       { component: Chap06Diagram,          title: 'Ch06 실습 핵심 개념',       subtitle: 'LUT·대비조절·히스토그램·평활화·CMY·컬러공간·Hue임계값' },
+  'cv-chap07':       { component: Chap07Diagram,          title: 'Ch07 실습 핵심 개념',       subtitle: '회선·Sobel방향·Canny4단계·모폴로지·번호판검출' },
+  'cv-chap07-filter': { component: () => <Chap07Diagram onlyTabs={['conv']} />,              title: '7.1 회선과 블러·샤프닝',      subtitle: '회선(Convolution) 원리 인터랙티브 시각화' },
+  'cv-chap07-edge':   { component: () => <Chap07Diagram onlyTabs={['sobel','canny']} />,     title: '7.2 에지 검출',               subtitle: 'Sobel 마스크 방향 + Canny 4단계 처리' },
+  'cv-chap07-morph':  { component: () => <Chap07Diagram onlyTabs={['morph','plate']} />,     title: '7.3~7.4 모폴로지·번호판',    subtitle: '침식·팽창·열림·닫힘 + 번호판 검출 파이프라인' },
+  'cv-chap08':       { component: Chap08Diagram,          title: 'Ch08 실습 핵심 개념',       subtitle: '순방향역방향·보간법·어파인변환·원근투시' },
+  'cv-chap09':       { component: Chap09Diagram,          title: 'Ch09 실습 핵심 개념',       subtitle: '공간주파수·DFT스펙트럼·LPF/HPF·DCT압축' },
+  'cv-chap10':       { component: Chap10Diagram,          title: 'Ch10 실습 핵심 개념',       subtitle: '허프변환·해리스코너·kNN분류·워핑모핑' },
+  'cv-chap11':       { component: Chap11Diagram,          title: 'Ch11 실습 핵심 개념',       subtitle: '하르분류기·히스토그램비교·성별분류파이프라인' },
+  'cv-chap12':       { component: Chap12Diagram,          title: 'Ch12 실습 핵심 개념',       subtitle: '동전인식·SVM번호판·kNN문자인식·종합파이프라인' },
 };
 
 export default function DiagramRenderer({ type }) {

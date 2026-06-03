@@ -1,4 +1,5 @@
-import { Link } from 'react-router-dom';
+import { useEffect, useRef } from 'react';
+import { Link, useParams } from 'react-router-dom';
 import { Clock, BookOpen, CheckCircle2, ChevronRight, Trophy } from 'lucide-react';
 import { opencvModules } from '../data/curriculum_opencv';
 
@@ -24,6 +25,18 @@ const PART_LABELS = {
 };
 
 export default function OpenCVCurriculumPage({ getModuleProgress, isLessonCompleted, isQuizCompleted }) {
+  const { moduleId } = useParams();
+  const moduleRefs = useRef({});
+
+  // moduleId 파라미터가 있으면 해당 챕터로 스크롤
+  useEffect(() => {
+    if (!moduleId) return;
+    const el = moduleRefs.current[moduleId];
+    if (el) {
+      setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+    }
+  }, [moduleId]);
+
   const groupedByPart = opencvModules.reduce((acc, m) => {
     if(!acc[m.partId]) acc[m.partId]=[];
     acc[m.partId].push(m);
@@ -53,8 +66,16 @@ export default function OpenCVCurriculumPage({ getModuleProgress, isLessonComple
                 const mp=getModuleProgress?.(module.id)||{completed:0,total:module.lessons.length,percent:0};
                 const quizDone=isQuizCompleted?.(module.quizId)||false;
 
+                const isActive = moduleId === module.id;
                 return (
-                  <div key={module.id} className={`rounded-2xl border-2 ${c.border} overflow-hidden shadow-sm`}>
+                  <div
+                    key={module.id}
+                    id={module.id}
+                    ref={el => { moduleRefs.current[module.id] = el; }}
+                    className={`rounded-2xl border-2 overflow-hidden shadow-sm transition-all duration-500 ${
+                      isActive ? `${c.border} ring-4 ring-offset-2 ring-blue-400 shadow-lg` : c.border
+                    }`}
+                  >
                     {/* 모듈 헤더 */}
                     <div className={`${c.header} text-white p-5`}>
                       <div className="flex items-center justify-between">

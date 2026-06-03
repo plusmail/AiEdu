@@ -1,0 +1,9 @@
+services:
+  aiedu:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: aiedu
+    ports:
+      - "3012:80"
+    restart: unless-stopped
