@@ -345,7 +345,6 @@ out.release()
       {
         id: "cv5-1", title: "5.1~5.4 배열·채널·산술·논리 연산",
         duration: "20분",
-        codeExampleIds: ["cv-array-ops", "cv-ch05-src"],
         content: `
 <h2>기본 배열 처리</h2>
 <div class="example-box">
@@ -383,7 +382,6 @@ cv2.bitwise_not(img)         # NOT: 색상 반전
       {
         id: "cv5-2", title: "5.5~5.6 통계·행렬 연산",
         duration: "15분",
-        codeExampleIds: ["cv-stats-code", "cv-ch05-src"],
         content: `
 <h2>통계 관련 함수</h2>
 <div class="example-box">

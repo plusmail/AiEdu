@@ -40,8 +40,6 @@ function TreeNode({node,depth=0,onSelect,selected}){
   const isSelected=selected===node;
   if(node.isLeaf){
     const [red,white]=node.count;
-    const total=red+white;
-    const cls=red>white?'red':'white';
     return (
       <div className={`relative cursor-pointer rounded-xl border-2 p-3 text-center transition-all min-w-[110px] ${isSelected?'scale-105 shadow-lg border-green-500 bg-green-50':'border-gray-200 bg-white hover:border-gray-400'}`}
         onClick={()=>onSelect(node)}>

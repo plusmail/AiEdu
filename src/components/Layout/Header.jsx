@@ -6,6 +6,8 @@ const navItems = [
   { path: '/', label: '홈' },
   { path: '/curriculum', label: 'ML+딥러닝' },
   { path: '/curriculum-cv', label: 'OpenCV' },
+  { path: '/curriculum-claude', label: '클로드 코드' },
+  { path: '/curriculum-llm', label: 'LLM 심화' },
   { path: '/tools', label: '학습 도구' },
   { path: '/playground', label: '코딩 실습' },
   { path: '/chat', label: 'AI 채팅' },

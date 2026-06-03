@@ -35,21 +35,19 @@ async function loadPyodide() {
   if (pyodideInstance) return pyodideInstance;
   if (pyodideLoading) return pyodideLoadPromise;
   pyodideLoading = true;
-  pyodideLoadPromise = new Promise(async (resolve, reject) => {
-    try {
-      if (!window.loadPyodide) {
-        await new Promise((res, rej) => {
-          const s = document.createElement('script');
-          s.src = 'https://cdn.jsdelivr.net/pyodide/v0.27.0/full/pyodide.js';
-          s.onload = res; s.onerror = rej;
-          document.head.appendChild(s);
-        });
-      }
-      const py = await window.loadPyodide({ indexURL: 'https://cdn.jsdelivr.net/pyodide/v0.27.0/full/' });
-      pyodideInstance = py;
-      resolve(py);
-    } catch (e) { reject(e); }
-  });
+  pyodideLoadPromise = (async () => {
+    if (!window.loadPyodide) {
+      await new Promise((res, rej) => {
+        const s = document.createElement('script');
+        s.src = 'https://cdn.jsdelivr.net/pyodide/v0.27.0/full/pyodide.js';
+        s.onload = res; s.onerror = rej;
+        document.head.appendChild(s);
+      });
+    }
+    const py = await window.loadPyodide({ indexURL: 'https://cdn.jsdelivr.net/pyodide/v0.27.0/full/' });
+    pyodideInstance = py;
+    return py;
+  })();
   return pyodideLoadPromise;
 }
 
@@ -66,7 +64,6 @@ function runJavaScript(code) {
   console.table = (d)    => logs.push(JSON.stringify(d, null, 2));
 
   try {
-    // eslint-disable-next-line no-new-func
     new Function(code)();
   } catch (e) {
     logs.push(`❌ ${e.name}: ${e.message}`);
@@ -207,7 +204,6 @@ export default function CodePlayground({
 
   const isPython    = language === 'python';
   const localOnly   = isPython && isLocalOnlyPython(code);
-  const canRun      = !localOnly; // JS는 항상 가능, Python은 localOnly 여부로 판단
 
   const handleRun = useCallback(async () => {
     if (isRunning || localOnly) return;

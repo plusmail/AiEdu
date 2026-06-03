@@ -89,7 +89,6 @@ export default function TransformerDiagram() {
 
         {BLOCKS.map((block, i) => {
           const isActive = active === block.id;
-          const isRepeat = block.id === 'attn' || block.id === 'ffn' || block.id === 'norm';
           return (
             <div key={block.id} className="w-full flex flex-col items-center">
               {/* Transformer 블록 반복 표시 시작 */}

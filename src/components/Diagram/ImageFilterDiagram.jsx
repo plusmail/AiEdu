@@ -73,7 +73,6 @@ const SZ = 40;
 
 export default function ImageFilterDiagram(){
   const [filter,setFilter]=useState('original');
-  const [step,setStep]=useState(null); // 컨볼루션 애니메이션 위치
   const f=FILTERS.find(f=>f.id===filter);
   const outputImg=applyFilter(SAMPLE,f);
 

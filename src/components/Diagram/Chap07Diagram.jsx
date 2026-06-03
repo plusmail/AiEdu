@@ -83,7 +83,7 @@ function ConvTab() {
             <div className="w-14 h-14 bg-green-500 rounded-xl flex items-center justify-center text-white text-lg font-bold shadow">{result}</div>
           </div>
           <div className="text-xs text-gray-500">
-            합계 = {roi.flat().map((v,i)=>`${v}×(1/9)`).slice(0,3).join(' + ')} + ... = <strong className="text-green-700">{result}</strong>
+            합계 = {roi.flat().map((v)=>`${v}×(1/9)`).slice(0,3).join(' + ')} + ... = <strong className="text-green-700">{result}</strong>
           </div>
 
           {/* 4가지 블러 비교 */}
@@ -342,18 +342,8 @@ function dilateOp(img) {
   }));
 }
 
-function MorphTab() {
-  const [op, setOp] = useState('erode');
-
-  const eroded  = erodeOp(NOISE_SRC);
-  const dilated = dilateOp(NOISE_SRC);
-  const opened  = dilateOp(erodeOp(NOISE_SRC));
-  const closed  = erodeOp(dilateOp(NOISE_SRC));
-
-  const results = {erode:eroded, dilate:dilated, open:opened, close:closed};
-  const result  = results[op] || NOISE_SRC;
-
-  const Grid = ({data, label, highlight=false}) => (
+function MorphGrid({data, label, highlight=false}) {
+  return (
     <div className="flex flex-col items-center gap-1">
       <div className="text-xs font-bold text-gray-600">{label}</div>
       <div className="flex flex-col gap-0.5">
@@ -370,6 +360,18 @@ function MorphTab() {
       <div className="text-xs text-gray-400">{data.flat().filter(Boolean).length}px</div>
     </div>
   );
+}
+
+function MorphTab() {
+  const [op, setOp] = useState('erode');
+
+  const eroded  = erodeOp(NOISE_SRC);
+  const dilated = dilateOp(NOISE_SRC);
+  const opened  = dilateOp(erodeOp(NOISE_SRC));
+  const closed  = erodeOp(dilateOp(NOISE_SRC));
+
+  const results = {erode:eroded, dilate:dilated, open:opened, close:closed};
+  const result  = results[op] || NOISE_SRC;
 
   return (
     <div className="space-y-4">
@@ -386,7 +388,7 @@ function MorphTab() {
       </div>
 
       <div className="flex gap-4 flex-wrap items-end">
-        <Grid data={NOISE_SRC} label="원본 (잡음 포함)" />
+        <MorphGrid data={NOISE_SRC} label="원본 (잡음 포함)" />
         {/* 구조요소 */}
         <div className="flex flex-col items-center gap-1">
           <div className="text-xs font-bold text-gray-600">구조요소 (SE)</div>
@@ -402,7 +404,7 @@ function MorphTab() {
           <div className="text-xs text-orange-600">십자형</div>
         </div>
         <div className="text-2xl text-gray-400">→</div>
-        <Grid data={result} label={['erode','dilate','open','close'].includes(op)?{erode:'침식 결과',dilate:'팽창 결과',open:'열림 결과 (잡음↓)',close:'닫힘 결과'}[op]:'결과'} highlight={op==='open'||op==='close'} />
+        <MorphGrid data={result} label={['erode','dilate','open','close'].includes(op)?{erode:'침식 결과',dilate:'팽창 결과',open:'열림 결과 (잡음↓)',close:'닫힘 결과'}[op]:'결과'} highlight={op==='open'||op==='close'} />
       </div>
 
       {/* 설명 */}

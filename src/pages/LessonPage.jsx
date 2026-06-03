@@ -1,24 +1,30 @@
 import { useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, CheckCircle2, Clock, BookOpen, Code2, BarChart2, FolderOpen } from 'lucide-react';
-import { getLessonById, modules } from '../data/curriculum';
+import { getLessonById } from '../data/curriculum';
 import { codeExamples } from '../data/codeExamples';
 import DiagramRenderer from '../components/Diagram/DiagramRenderer';
 import CodePlayground from '../components/CodePlayground/CodePlayground';
 
-export default function LessonPage({ isLessonCompleted, completeLesson, getOpenCVLesson, opencvCodeExamples, mlCodeExamples, chapExamples }) {
+export default function LessonPage({ isLessonCompleted, completeLesson, getOpenCVLesson, getClaudeLesson, getLlmLesson, opencvCodeExamples, mlCodeExamples, chapExamples }) {
   const { lessonId } = useParams();
   const navigate = useNavigate();
   const [activeCodeTab, setActiveCodeTab] = useState(0);
   const [selectedChapFile, setSelectedChapFile] = useState(0);
 
-  // lessonId가 'cv'로 시작하면 OpenCV 강의
-  const isCV = typeof lessonId === 'string' && lessonId.startsWith('cv');
+  // lessonId prefix로 커리큘럼 구분
+  const isCV     = typeof lessonId === 'string' && lessonId.startsWith('cv');
+  const isClaude = typeof lessonId === 'string' && lessonId.startsWith('cc');
+  const isLlm    = typeof lessonId === 'string' && lessonId.startsWith('llm');
 
-  // ML 또는 OpenCV 강의 조회
-  const result = isCV
-    ? (getOpenCVLesson ? getOpenCVLesson(lessonId) : null)
-    : getLessonById(lessonId);
+  // 커리큘럼별 강의 조회
+  const result = isLlm
+    ? (getLlmLesson ? getLlmLesson(lessonId) : null)
+    : isClaude
+      ? (getClaudeLesson ? getClaudeLesson(lessonId) : null)
+      : isCV
+        ? (getOpenCVLesson ? getOpenCVLesson(lessonId) : null)
+        : getLessonById(lessonId);
 
   if (!result) {
     return (
@@ -52,9 +58,18 @@ export default function LessonPage({ isLessonCompleted, completeLesson, getOpenC
 
   const colorMap = {
     blue: 'bg-blue-700', purple: 'bg-purple-700', green: 'bg-green-700',
-    orange: 'bg-orange-700', red: 'bg-red-700',
+    orange: 'bg-orange-700', red: 'bg-red-700', cyan: 'bg-cyan-700',
+    indigo: 'bg-indigo-700', yellow: 'bg-yellow-600',
   };
   const headerBg = colorMap[module.color] || 'bg-blue-700';
+
+  const curriculumPath = isLlm
+    ? `/curriculum-llm/${module.id}`
+    : isClaude
+      ? `/curriculum-claude/${module.id}`
+      : isCV
+        ? `/curriculum-cv/${module.id}`
+        : `/curriculum/${module.id}`;
 
   function handleComplete() {
     completeLesson(lessonId, module.id);
@@ -66,7 +81,7 @@ export default function LessonPage({ isLessonCompleted, completeLesson, getOpenC
     <div className="animate-fade-in max-w-3xl mx-auto space-y-6">
       {/* 뒤로가기 */}
       <Link
-        to={isCV ? `/curriculum-cv/${module.id}` : `/curriculum/${module.id}`}
+        to={curriculumPath}
         className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-700"
       >
         <ChevronLeft size={16} /> {module.title}으로 돌아가기

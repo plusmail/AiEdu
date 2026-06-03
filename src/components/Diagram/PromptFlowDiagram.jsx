@@ -47,7 +47,7 @@ export default function PromptFlowDiagram() {
               >
                 {e.example}
               </span>
-            )).reduce((prev, curr, i) => [prev, ' ', curr])}
+            )).reduce((prev, curr) => [prev, ' ', curr])}
           </div>
         </div>
       </div>

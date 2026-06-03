@@ -38,6 +38,52 @@ function Arrow({ label, vertical }) {
   );
 }
 
+function Cell({ v, highlight }) {
+  return (
+    <div className={`w-8 h-8 rounded flex items-center justify-center text-xs font-bold transition-all
+      ${v ? 'bg-white text-gray-800' : 'bg-gray-800 text-gray-500'}
+      ${highlight ? 'ring-2 ring-yellow-400' : ''}`}>
+      {v}
+    </div>
+  );
+}
+
+function Grid({ data, label, color = 'gray' }) {
+  const border = { blue: 'border-blue-400', orange: 'border-orange-400', green: 'border-green-400', gray: 'border-gray-400', purple: 'border-purple-400', red: 'border-red-400' };
+  return (
+    <div className="flex flex-col items-center gap-1">
+      <div className="text-xs font-bold text-gray-600">{label}</div>
+      <div className={`p-1.5 rounded-xl border-2 ${border[color]} bg-gray-900 inline-flex flex-col gap-0.5`}>
+        {data.map((row, r) => (
+          <div key={r} className="flex gap-0.5">
+            {row.map((v, c) => <Cell key={c} v={v} />)}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function MatBox({ mat, label, highlight }) {
+  return (
+    <div className="flex flex-col items-center gap-1">
+      <div className="text-xs font-bold text-gray-600">{label}</div>
+      <div className="inline-flex flex-col gap-0.5 bg-gray-900 p-1.5 rounded-lg">
+        {mat.map((row, r) => (
+          <div key={r} className="flex gap-0.5">
+            {row.map((v, c) => (
+              <div key={c} className={`w-8 h-7 rounded flex items-center justify-center text-xs font-bold ${highlight ? 'bg-blue-400 text-white' : 'bg-gray-700 text-green-300'}`}>
+                {typeof v === 'number' ? (Number.isInteger(v) ? v : v.toFixed(2)) : v}
+              </div>
+            ))}
+          </div>
+        ))}
+      </div>
+      <div className="text-xs text-gray-400 font-mono">{mat.length}×{mat[0].length}</div>
+    </div>
+  );
+}
+
 /* ══════════════════════════════════════════════════════
    TAB 1: 비트 연산 + 마스킹 합성 (07.bitwise_op + 08.bitwise_overlap)
 ══════════════════════════════════════════════════════ */
@@ -51,7 +97,7 @@ function BitwiseTab() {
       return dr * dr + dc * dc <= 4 ? 1 : 0;   // 반지름 2 원
     })
   );
-  const rectGrid = Array.from({ length: 5 }, (_, r) =>
+  const rectGrid = Array.from({ length: 5 }, () =>
     Array.from({ length: 5 }, (_, c) => (c < 3 ? 1 : 0))   // 왼쪽 3열
   );
 
@@ -64,30 +110,6 @@ function BitwiseTab() {
     AND: opGrid((a, b) => a & b),
     XOR: opGrid((a, b) => a ^ b),
     NOT: circleGrid.map(row => row.map(v => v ^ 1)),
-  };
-
-  const Cell = ({ v, highlight }) => (
-    <div className={`w-8 h-8 rounded flex items-center justify-center text-xs font-bold transition-all
-      ${v ? 'bg-white text-gray-800' : 'bg-gray-800 text-gray-500'}
-      ${highlight ? 'ring-2 ring-yellow-400' : ''}`}>
-      {v}
-    </div>
-  );
-
-  const Grid = ({ data, label, color = 'gray' }) => {
-    const border = { blue: 'border-blue-400', orange: 'border-orange-400', green: 'border-green-400', gray: 'border-gray-400', purple: 'border-purple-400', red: 'border-red-400' };
-    return (
-      <div className="flex flex-col items-center gap-1">
-        <div className="text-xs font-bold text-gray-600">{label}</div>
-        <div className={`p-1.5 rounded-xl border-2 ${border[color]} bg-gray-900 inline-flex flex-col gap-0.5`}>
-          {data.map((row, r) => (
-            <div key={r} className="flex gap-0.5">
-              {row.map((v, c) => <Cell key={c} v={v} />)}
-            </div>
-          ))}
-        </div>
-      </div>
-    );
   };
 
   return (
@@ -552,26 +574,6 @@ function GemmTab() {
     rotMat[0][0] * pt[0] + rotMat[0][1] * pt[1],
     rotMat[1][0] * pt[0] + rotMat[1][1] * pt[1],
   ]);
-
-  function MatBox({ mat, label, highlight }) {
-    return (
-      <div className="flex flex-col items-center gap-1">
-        <div className="text-xs font-bold text-gray-600">{label}</div>
-        <div className="inline-flex flex-col gap-0.5 bg-gray-900 p-1.5 rounded-lg">
-          {mat.map((row, r) => (
-            <div key={r} className="flex gap-0.5">
-              {row.map((v, c) => (
-                <div key={c} className={`w-8 h-7 rounded flex items-center justify-center text-xs font-bold ${highlight ? 'bg-blue-400 text-white' : 'bg-gray-700 text-green-300'}`}>
-                  {typeof v === 'number' ? (Number.isInteger(v) ? v : v.toFixed(2)) : v}
-                </div>
-              ))}
-            </div>
-          ))}
-        </div>
-        <div className="text-xs text-gray-400 font-mono">{mat.length}×{mat[0].length}</div>
-      </div>
-    );
-  }
 
   return (
     <div className="space-y-4">

@@ -24,7 +24,6 @@ export default function ImageRepresentDiagram() {
   const [bitDepth, setBitDepth] = useState(8);
 
   const levels = Math.pow(2, bitDepth);
-  const maxVal = levels - 1;
 
   return (
     <div className="space-y-3">

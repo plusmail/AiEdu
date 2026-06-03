@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState } from 'react';
 
 function Code({ children }) {
   return <pre className="bg-gray-900 text-green-300 text-xs rounded-xl p-3 font-mono leading-relaxed overflow-x-auto whitespace-pre-wrap">{children}</pre>;
@@ -255,8 +255,7 @@ function KnnTab() {
             {trainA.map(([x,y],i)=><circle key={"a"+i} cx={x} cy={y} r={7} fill="#3b82f6" stroke="white" strokeWidth="1.5"/>)}
             {trainB.map(([x,y],i)=><circle key={"b"+i} cx={x} cy={y} r={7} fill="#a78bfa" stroke="white" strokeWidth="1.5"/>)}
             {/* k개 이웃 연결선 */}
-            {kNeighbors.map(({cls},i)=>{
-              const pt=cls===0?trainA[Math.floor(i/1)]:trainB[Math.floor(i/1)];
+            {kNeighbors.map((_,i)=>{
               const srcPt=all.sort((a,b)=>{
                 const da=(a.p[0]-testX)**2+(a.p[1]-testY)**2;
                 const db=(b.p[0]-testX)**2+(b.p[1]-testY)**2;
@@ -311,7 +310,7 @@ function WarpingTab() {
   const [offsetX, setOffsetX] = useState(20);
 
   /* 08.warping.py — 열 이동 방식 시뮬레이션 */
-  const W=200, H=60;
+  const W=200;
   const getShift = (x) => {
     const ratio = x < pivotX ? x/pivotX : (W-x)/(W-pivotX);
     return Math.round(ratio * offsetX);

@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { BookOpen, MessageSquare, Trophy, ChevronRight, Clock, CheckCircle2, Lock } from 'lucide-react';
+import { BookOpen, MessageSquare, Trophy, ChevronRight, Clock, CheckCircle2 } from 'lucide-react';
 import { modules } from '../data/curriculum';
 
 const colorMap = {
@@ -12,9 +12,8 @@ const colorMap = {
   indigo: { bg: 'bg-indigo-50', border: 'border-indigo-200', icon: 'bg-indigo-100 text-indigo-700', badge: 'bg-indigo-600', text: 'text-indigo-700', bar: 'bg-indigo-500' },
 };
 
-function ModuleCard({ module, moduleProgress, isQuizDone, index }) {
+function ModuleCard({ module, moduleProgress, isQuizDone }) {
   const c = colorMap[module.color];
-  const isLocked = index > 0 && false; // 순차 학습 강제하지 않음
 
   return (
     <div className={`rounded-xl border-2 ${c.border} ${c.bg} p-5 flex flex-col gap-3 transition-all hover:shadow-md`}>

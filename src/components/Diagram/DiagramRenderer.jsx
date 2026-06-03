@@ -25,6 +25,43 @@ import ArrayOpsDiagram      from './ArrayOpsDiagram';
 import ImageIODiagram        from './ImageIODiagram';
 import StatsDiagram          from './StatsDiagram';
 import Chap05Diagram         from './Chap05Diagram';
+// 클로드 코드 전용 다이어그램
+import AgenticLoopDiagram     from './AgenticLoopDiagram';
+import WorkflowDiagram        from './WorkflowDiagram';
+import OrchestratorWorkerDiagram from './OrchestratorWorkerDiagram';
+import ClaudeMemoryDiagram    from './ClaudeMemoryDiagram';
+import SkillStructureDiagram  from './SkillStructureDiagram';
+import PlanRunSyncDiagram     from './PlanRunSyncDiagram';
+import MoaiArchDiagram        from './MoaiArchDiagram';
+import ContextWindowDiagram   from './ContextWindowDiagram';
+import SettingsPriorityDiagram from './SettingsPriorityDiagram';
+import HookSystemDiagram      from './HookSystemDiagram';
+import AgentTeamDiagram       from './AgentTeamDiagram';
+import Trust5Diagram          from './Trust5Diagram';
+import TddLoopDiagram         from './TddLoopDiagram';
+import WorktreeDiagram        from './WorktreeDiagram';
+import McpIntegrationDiagram  from './McpIntegrationDiagram';
+import ModelSelectionDiagram  from './ModelSelectionDiagram';
+import CliModesDiagram        from './CliModesDiagram';
+import ProjectContextDiagram  from './ProjectContextDiagram';
+import SkillDevDiagram        from './SkillDevDiagram';
+import CustomAgentDiagram     from './CustomAgentDiagram';
+import OutputStyleDiagram     from './OutputStyleDiagram';
+import CheckpointDiagram      from './CheckpointDiagram';
+import NonInteractiveDiagram  from './NonInteractiveDiagram';
+import SyncFlowDiagram        from './SyncFlowDiagram';
+import ExternalLlmDiagram     from './ExternalLlmDiagram';
+import MoaiCommandsDiagram    from './MoaiCommandsDiagram';
+// LLM 전용 다이어그램
+import BpeTokenizationDiagram  from './BpeTokenizationDiagram';
+import SlidingWindowDiagram    from './SlidingWindowDiagram';
+import SelfAttentionDiagram    from './SelfAttentionDiagram';
+import DecodingStrategiesDiagram from './DecodingStrategiesDiagram';
+import RlhfDiagram             from './RlhfDiagram';
+import RagPipelineDiagram      from './RagPipelineDiagram';
+import ReactAgentDiagram       from './ReactAgentDiagram';
+import QuantizationDiagram     from './QuantizationDiagram';
+import MultimodalDiagram       from './MultimodalDiagram';
 import Chap06Diagram         from './Chap06Diagram';
 import Chap07Diagram         from './Chap07Diagram';
 import Chap08Diagram         from './Chap08Diagram';
@@ -72,6 +109,43 @@ const DIAGRAMS = {
   'cv-chap10':       { component: Chap10Diagram,          title: 'Ch10 실습 핵심 개념',       subtitle: '허프변환·해리스코너·kNN분류·워핑모핑' },
   'cv-chap11':       { component: Chap11Diagram,          title: 'Ch11 실습 핵심 개념',       subtitle: '하르분류기·히스토그램비교·성별분류파이프라인' },
   'cv-chap12':       { component: Chap12Diagram,          title: 'Ch12 실습 핵심 개념',       subtitle: '동전인식·SVM번호판·kNN문자인식·종합파이프라인' },
+  // 클로드 코드 마스터
+  'agentic-loop':          { component: AgenticLoopDiagram,        title: '에이전틱 루프',           subtitle: '사용자 요청→분석→계획→실행→확인 자율 반복 사이클' },
+  'explore-plan-code-commit': { component: WorkflowDiagram,        title: '탐색-계획-구현-커밋 워크플로', subtitle: '클로드 코드 핵심 4단계 작업 방식' },
+  'orchestrator-worker':   { component: OrchestratorWorkerDiagram, title: '오케스트레이터-워커 패턴', subtitle: '병렬 에이전트 협업으로 복잡한 작업 효율화' },
+  'claude-memory-layers':  { component: ClaudeMemoryDiagram,       title: '4계층 메모리 시스템',      subtitle: '컨텍스트·CLAUDE.md·파일시스템·외부메모리' },
+  'skill-structure':       { component: SkillStructureDiagram,     title: '스킬 구조와 생명주기',     subtitle: 'YAML 프론트매터·본문·트리거·격리실행(fork)' },
+  'plan-run-sync':         { component: PlanRunSyncDiagram,        title: 'plan-run-sync 워크플로',  subtitle: 'MoAI-ADK 핵심 SPEC→TDD→동기화 자동화 사이클' },
+  'moai-architecture':     { component: MoaiArchDiagram,           title: 'MoAI-ADK 4계층 아키텍처', subtitle: '인터페이스→오케스트레이션→실행→인프라 구조' },
+  'context-window':        { component: ContextWindowDiagram,      title: '컨텍스트 윈도우',          subtitle: '20만 토큰 구성 시각화 + 관리 전략 4가지' },
+  'settings-priority':     { component: SettingsPriorityDiagram,   title: 'settings.json 우선순위',   subtitle: '프로젝트 로컬 > 공유 > 사용자 전역 3단계' },
+  'hook-system':           { component: HookSystemDiagram,         title: '훅 시스템',                subtitle: 'PreToolUse·PostToolUse·Stop 이벤트와 종료 코드' },
+  'agent-team':            { component: AgentTeamDiagram,          title: '에이전트 팀 협업',         subtitle: 'Sequential·Parallel·Mixed 실행 모드 + 파일 소유권' },
+  'trust5-framework':      { component: Trust5Diagram,             title: 'TRUST-5 품질 프레임워크',  subtitle: 'Tested·Reviewed·Understood·Secured·Typed 5가지 기준' },
+  'tdd-loop':              { component: TddLoopDiagram,            title: 'TDD 사이클',               subtitle: 'Red(실패) → Green(통과) → Refactor → TRUST-5 반복' },
+  'worktree-parallel':     { component: WorktreeDiagram,           title: 'Git 작업 트리 병렬 개발',  subtitle: '에이전트별 독립 브랜치·디렉토리로 충돌 없는 동시 개발' },
+  'mcp-integration':       { component: McpIntegrationDiagram,     title: 'MCP 통합과 외부 연결',     subtitle: 'GitHub·PostgreSQL·Slack·Puppeteer MCP 서버 활용' },
+  'model-selection':       { component: ModelSelectionDiagram,     title: '모델 구성과 API 최적화',   subtitle: 'Opus·Sonnet·Haiku 비교 + 프롬프트 캐싱 + 선택 전략' },
+  'cli-modes':             { component: CliModesDiagram,           title: 'CLI 실행 모드',             subtitle: '대화형·비대화형 모드 + 주요 플래그 + 단축키' },
+  'project-context':       { component: ProjectContextDiagram,     title: '프로젝트 컨텍스트 인식',    subtitle: 'Git·파일구조·CLAUDE.md 자동 파악 + Git 통합' },
+  'skill-dev':             { component: SkillDevDiagram,           title: '스킬 개발과 생명주기',      subtitle: '트리거→로드→실행 5단계 + 템플릿 + 환각 방지' },
+  'custom-agent':          { component: CustomAgentDiagram,        title: '커스텀 에이전트 개발',      subtitle: '파일 구조·프론트매터 가이드·보안/문서/테스트 예제' },
+  'output-style':          { component: OutputStyleDiagram,        title: '출력 스타일 커스터마이징',  subtitle: 'Default·Concise·JSON·Markdown 형식 비교' },
+  'checkpoint':            { component: CheckpointDiagram,         title: '체크포인팅과 세션 관리',    subtitle: '/rewind 되감기 + 컨텍스트 전략 + Git 통합' },
+  'noninteractive':        { component: NonInteractiveDiagram,     title: '비대화형 모드와 파이프',    subtitle: '파이프 활용·CI/CD 통합·출력 형식 3가지' },
+  'sync-flow':             { component: SyncFlowDiagram,           title: '/moai sync 4단계 흐름',    subtitle: '분석→문서동기화→Git커밋→완료보고 자동화' },
+  'external-llm':          { component: ExternalLlmDiagram,        title: '외부 LLM 연동',             subtitle: 'GLM-5·Ollama·DeepSeek OpenAI 호환 API 설정' },
+  'moai-commands':         { component: MoaiCommandsDiagram,       title: 'MoAI-ADK 슬래시 명령어',   subtitle: 'plan·run·sync·fix + 빌더·유틸리티 전체 레퍼런스' },
+  // LLM 전용
+  'bpe-tokenization':      { component: BpeTokenizationDiagram,    title: '텍스트 토큰화와 BPE',       subtitle: '언어별 토큰 수 비교 + BPE 5단계 + 비용 차이' },
+  'sliding-window':        { component: SlidingWindowDiagram,      title: '슬라이딩 윈도우 데이터셋',  subtitle: '+1 Shift로 (입력, 정답) 쌍 생성 인터랙티브' },
+  'self-attention':        { component: SelfAttentionDiagram,      title: '셀프 어텐션 메커니즘',      subtitle: '어텐션 히트맵 · Q·K·V 역할 · 인과적 마스킹' },
+  'decoding-strategies':   { component: DecodingStrategiesDiagram, title: '디코딩 전략',               subtitle: 'Temperature · Top-K · Top-P 확률 분포 인터랙티브' },
+  'rlhf':                  { component: RlhfDiagram,               title: 'RLHF 파이프라인',           subtitle: 'SFT → 보상 모델 → PPO 3단계 + SFT vs RLHF 비교' },
+  'rag-pipeline':          { component: RagPipelineDiagram,        title: 'RAG 파이프라인',            subtitle: '청킹→임베딩→벡터DB→검색→주입 7단계 + 한계' },
+  'react-agent':           { component: ReactAgentDiagram,         title: 'ReAct 에이전트 루프',       subtitle: 'Thought→Action→Observation 반복 + 도구 목록 + 멀티 에이전트' },
+  'quantization':          { component: QuantizationDiagram,       title: '모델 양자화',               subtitle: '32bit→4bit 압축 · VRAM 절감 · 메모리 시각화' },
+  'multimodal':            { component: MultimodalDiagram,         title: '멀티모달 LLM',              subtitle: 'CLIP 대조 학습 · 이미지-텍스트 매칭 · LLaVA 아키텍처' },
 };
 
 export default function DiagramRenderer({ type }) {

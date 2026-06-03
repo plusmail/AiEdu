@@ -35,7 +35,7 @@ const PROMPTS = [
 export default function LlmTokenDiagram() {
   const [promptIdx, setPromptIdx] = useState(0);
   const [revealed, setRevealed] = useState(0);
-  const [showProbs, setShowProbs] = useState(false);
+  const [showProbs, setShowProbs] = useState(true);
   const timerRef = useRef(null);
   const data = PROMPTS[promptIdx];
 
@@ -62,7 +62,7 @@ export default function LlmTokenDiagram() {
     return () => clearInterval(timerRef.current);
   }, []);
 
-  const probStep = revealed > 0 && revealed <= data.probs.length ? revealed - 1 : null;
+  const probStep = revealed > 0 ? Math.min(revealed - 1, data.probs.length - 1) : null;
 
   return (
     <div className="space-y-4">

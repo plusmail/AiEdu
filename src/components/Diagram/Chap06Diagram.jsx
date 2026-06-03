@@ -221,14 +221,15 @@ function HistogramTab() {
   /* 가상 픽셀 분포 (어두운 영상: 50~200 범위) */
   const pixelDist = useMemo(() => {
     const hist = new Array(256).fill(0);
+    let seed = (lowCut * 73856093 ^ highCut * 19349663) | 0;
     for (let i = 0; i < 500; i++) {
-      const v = Math.round(lowCut + Math.random() * (highCut - lowCut));
+      seed = (seed * 1664525 + 1013904223) | 0;
+      const t = (seed >>> 0) / 4294967296;
+      const v = Math.round(lowCut + t * (highCut - lowCut));
       if (v >= 0 && v < 256) hist[v]++;
     }
     return hist;
   }, [lowCut, highCut]);
-
-  const maxH = Math.max(...pixelDist);
   const ratio = 255 / ((highCut - lowCut) || 1);
 
   /* 32개 구간으로 축약 */
@@ -418,8 +419,11 @@ function EqualizeTab() {
   /* 가상 히스토그램 (좁은 분포) */
   const hist = useMemo(() => {
     const h = new Array(256).fill(0);
+    let seed = 42;
     for (let i = 0; i < 1000; i++) {
-      const v = Math.round(60 + Math.random() * 80);
+      seed = (seed * 1664525 + 1013904223) | 0;
+      const t = (seed >>> 0) / 4294967296;
+      const v = Math.round(60 + t * 80);
       if (v < 256) h[v]++;
     }
     return h;
@@ -496,7 +500,7 @@ function EqualizeTab() {
             if (step === 0) { barH = maxBin > 0 ? (v / maxBin) * 100 : 0; barColor = '#60a5fa'; }
             else if (step === 1) { barH = (lut32[i] / 255) * 100; barColor = '#a78bfa'; } // CDF 누적
             else if (step === 2) { barH = (lut32[i] / 255) * 100; barColor = '#34d399'; }
-            else { barH = 20 + Math.random() * 60; barColor = '#f59e0b'; } // 평활화 후 고른 분포
+            else { barH = 35 + (i * 7 + 13) % 45; barColor = '#f59e0b'; } // 평활화 후 고른 분포
             return (
               <div key={i} className="flex-1 rounded-t transition-all duration-500"
                 style={{ height: `${barH}%`, backgroundColor: barColor, minWidth: 2 }} />

@@ -70,7 +70,7 @@ function DftTab() {
 
   const imgs = {
     rect: Array.from({length:SIZE},(_,r)=>Array.from({length:SIZE},(_,c)=>r>=8&&r<24&&c>=8&&c<24?200:20)),
-    stripe: Array.from({length:SIZE},(_,r)=>Array.from({length:SIZE},(_,c)=>c%4<2?200:20)),
+    stripe: Array.from({length:SIZE},()=>Array.from({length:SIZE},(_,c)=>c%4<2?200:20)),
     circle: Array.from({length:SIZE},(_,r)=>Array.from({length:SIZE},(_,c)=>{
       const dr=r-SIZE/2, dc=c-SIZE/2;
       return dr*dr+dc*dc<64?200:20;
@@ -168,13 +168,6 @@ function FilteringTab() {
   const [d0, setD0] = useState(10);
   const [filterType, setFilterType] = useState('lpf');
   const SIZE = 64;
-
-  /* 원형 마스크로 LPF/HPF 시뮬레이션 */
-  const mask = Array.from({length:SIZE},(_,r)=>Array.from({length:SIZE},(_,c)=>{
-    const dr=(r-SIZE/2), dc=(c-SIZE/2);
-    const dist=Math.sqrt(dr*dr+dc*dc);
-    return filterType==='lpf' ? (dist<=d0?1:0) : (dist>d0?1:0);
-  }));
 
   const previewColors = {
     lpf: {pass:'#60a5fa', block:'#1e293b', label:'저주파 통과 (LPF)', effect:'블러 효과'},
@@ -331,7 +324,6 @@ function DctTab() {
           <div className="text-xs font-bold text-gray-600 mb-1">DCT 계수 (보존: {keep}×{keep})</div>
           <div style={{display:'grid',gridTemplateColumns:'repeat(8,28px)',gap:1}}>
             {dctCoeffs.map((row,r)=>row.map((v,c)=>{
-              const kept = compressed[r][c]!==0 || (r===0&&c===0&&dctCoeffs[0][0]!==0);
               const inKeep = r<keep&&c<keep;
               return (
                 <div key={`${r}${c}`} className={`w-7 h-7 flex items-center justify-center rounded transition-all`}

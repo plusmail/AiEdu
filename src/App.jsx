@@ -3,6 +3,8 @@ import Layout from './components/Layout/Layout';
 import HomePage from './pages/HomePage';
 import CurriculumPage from './pages/CurriculumPage';
 import OpenCVCurriculumPage from './pages/OpenCVCurriculumPage';
+import ClaudeCurriculumPage from './pages/ClaudeCurriculumPage';
+import LlmCurriculumPage from './pages/LlmCurriculumPage';
 import LessonPage from './pages/LessonPage';
 import QuizPage from './pages/QuizPage';
 import ChatPage from './pages/ChatPage';
@@ -10,6 +12,8 @@ import PlaygroundPage from './pages/PlaygroundPage';
 import ToolsPage from './pages/ToolsPage';
 import { useProgress } from './hooks/useProgress';
 import { getOpenCVLessonById } from './data/curriculum_opencv';
+import { getClaudeLessonById } from './data/curriculum_claude';
+import { getLlmLessonById } from './data/curriculum_llm';
 import { getOpenCVQuizById } from './data/quizzes_opencv';
 import { opencvCodeExamples } from './data/codeExamples_opencv';
 import { chapExamples } from './data/chapExamples_opencv';
@@ -57,11 +61,29 @@ export default function App() {
             <OpenCVCurriculumPage getModuleProgress={getModuleProgress}
               isLessonCompleted={isLessonCompleted} isQuizCompleted={isQuizCompleted}/>
           }/>
+          <Route path="/curriculum-claude" element={
+            <ClaudeCurriculumPage getModuleProgress={getModuleProgress}
+              isLessonCompleted={isLessonCompleted} isQuizCompleted={isQuizCompleted}/>
+          }/>
+          <Route path="/curriculum-claude/:moduleId" element={
+            <ClaudeCurriculumPage getModuleProgress={getModuleProgress}
+              isLessonCompleted={isLessonCompleted} isQuizCompleted={isQuizCompleted}/>
+          }/>
+          <Route path="/curriculum-llm" element={
+            <LlmCurriculumPage getModuleProgress={getModuleProgress}
+              isLessonCompleted={isLessonCompleted} isQuizCompleted={isQuizCompleted}/>
+          }/>
+          <Route path="/curriculum-llm/:moduleId" element={
+            <LlmCurriculumPage getModuleProgress={getModuleProgress}
+              isLessonCompleted={isLessonCompleted} isQuizCompleted={isQuizCompleted}/>
+          }/>
           <Route path="/lesson/:lessonId" element={
             <LessonPage
               isLessonCompleted={isLessonCompleted}
               completeLesson={completeLesson}
               getOpenCVLesson={getOpenCVLessonById}
+              getClaudeLesson={getClaudeLessonById}
+              getLlmLesson={getLlmLessonById}
               opencvCodeExamples={opencvCodeExamples}
               mlCodeExamples={mlCodeExamples}
               chapExamples={chapExamples}

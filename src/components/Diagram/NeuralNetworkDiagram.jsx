@@ -21,7 +21,6 @@ export default function NeuralNetworkDiagram() {
   const intervalRef = useRef(null);
 
   function startAnimation() {
-    setSignalStep(0);
     clearInterval(intervalRef.current);
     intervalRef.current = setInterval(() => {
       setSignalStep(s => {

@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState } from 'react';
 
 /* ── 공통: 픽셀 그리드 생성 ── */
 function makeGrid(rows, cols, seed = 42) {
@@ -401,7 +401,6 @@ function MatrixBox({ mat, label, highlight, color = 'blue' }) {
 
 function MatOpsSection() {
   const [op, setOp] = useState('gemm');
-  const [highlight, setHighlight] = useState(null);
 
   // gemm: A(2×3) × B(3×2) = C(2×2)
   const gemmResult = MAT_A.map(row =>

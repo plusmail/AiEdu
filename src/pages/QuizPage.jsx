@@ -1,13 +1,12 @@
 import { useState } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { CheckCircle2, XCircle, ChevronRight, Trophy, RotateCcw, Home } from 'lucide-react';
 import { getQuizById } from '../data/quizzes';
 import { modules } from '../data/curriculum';
 import { opencvModules } from '../data/curriculum_opencv';
 
-export default function QuizPage({ isQuizCompleted, completeQuiz, getQuizByIdOverride }) {
+export default function QuizPage({ completeQuiz, getQuizByIdOverride }) {
   const { quizId } = useParams();
-  const navigate = useNavigate();
   const quiz = getQuizByIdOverride ? getQuizByIdOverride(quizId) : getQuizById(quizId);
 
   // 다음 모듈 찾기 (ML + CV 통합)

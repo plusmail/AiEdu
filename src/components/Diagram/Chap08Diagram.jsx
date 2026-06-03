@@ -26,11 +26,6 @@ function MappingTab() {
     return sr<srcH&&sc<srcW;
   }));
 
-  const Cell = ({v,empty}) => (
-    <div className={`w-5 h-5 rounded-sm border ${v?'bg-blue-400 border-blue-500':'empty'?'bg-red-200 border-red-300':'bg-gray-800 border-gray-700'}`}
-      style={{backgroundColor: v?(empty?'#fca5a5':'#60a5fa'):(!v&&empty)?'#fca5a5':'#1e293b'}}/>
-  );
-
   return (
     <div className="space-y-4">
       <div className="text-xs text-gray-500 bg-blue-50 border border-blue-200 rounded-lg p-2">
