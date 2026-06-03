@@ -42,8 +42,10 @@ export default function App() {
       <Layout totalProgress={totalProgressValue}>
         <Routes>
           <Route path="/" element={
-            <HomePage getModuleProgress={getModuleProgress}
-              isQuizCompleted={isQuizCompleted} getTotalProgress={getTotalProgress}/>
+            <HomePage
+              isLessonCompleted={isLessonCompleted}
+              isQuizCompleted={isQuizCompleted}
+            />
           }/>
           <Route path="/curriculum" element={
             <CurriculumPage getModuleProgress={getModuleProgress}

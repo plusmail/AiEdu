@@ -62,6 +62,12 @@ import RagPipelineDiagram      from './RagPipelineDiagram';
 import ReactAgentDiagram       from './ReactAgentDiagram';
 import QuantizationDiagram     from './QuantizationDiagram';
 import MultimodalDiagram       from './MultimodalDiagram';
+import RagLimitsDiagram        from './RagLimitsDiagram';
+import KoreanTokenDiagram      from './KoreanTokenDiagram';
+import WorldModelDiagram       from './WorldModelDiagram';
+import TokenEmbeddingDiagram   from './TokenEmbeddingDiagram';
+import LlmWikiDiagram          from './LlmWikiDiagram';
+import FunctionCallingDiagram  from './FunctionCallingDiagram';
 import Chap06Diagram         from './Chap06Diagram';
 import Chap07Diagram         from './Chap07Diagram';
 import Chap08Diagram         from './Chap08Diagram';
@@ -142,10 +148,16 @@ const DIAGRAMS = {
   'self-attention':        { component: SelfAttentionDiagram,      title: '셀프 어텐션 메커니즘',      subtitle: '어텐션 히트맵 · Q·K·V 역할 · 인과적 마스킹' },
   'decoding-strategies':   { component: DecodingStrategiesDiagram, title: '디코딩 전략',               subtitle: 'Temperature · Top-K · Top-P 확률 분포 인터랙티브' },
   'rlhf':                  { component: RlhfDiagram,               title: 'RLHF 파이프라인',           subtitle: 'SFT → 보상 모델 → PPO 3단계 + SFT vs RLHF 비교' },
-  'rag-pipeline':          { component: RagPipelineDiagram,        title: 'RAG 파이프라인',            subtitle: '청킹→임베딩→벡터DB→검색→주입 7단계 + 한계' },
+  'rag-pipeline':          { component: RagPipelineDiagram,        title: 'RAG 파이프라인',            subtitle: '청킹→임베딩→벡터DB→검색→주입 7단계' },
+  'rag-limits':            { component: RagLimitsDiagram,          title: 'RAG 구조적 한계',           subtitle: '청킹·검색실패·컨텍스트과부하 · HyDE·Re-ranking · GraphRAG' },
   'react-agent':           { component: ReactAgentDiagram,         title: 'ReAct 에이전트 루프',       subtitle: 'Thought→Action→Observation 반복 + 도구 목록 + 멀티 에이전트' },
   'quantization':          { component: QuantizationDiagram,       title: '모델 양자화',               subtitle: '32bit→4bit 압축 · VRAM 절감 · 메모리 시각화' },
   'multimodal':            { component: MultimodalDiagram,         title: '멀티모달 LLM',              subtitle: 'CLIP 대조 학습 · 이미지-텍스트 매칭 · LLaVA 아키텍처' },
+  'korean-token':          { component: KoreanTokenDiagram,        title: '한국어 토큰화의 한계',       subtitle: '자모 분해 시각화 · 컨텍스트 손실 · 비용 계산기' },
+  'world-model':           { component: WorldModelDiagram,         title: '월드 모델',                 subtitle: '프레임 예측 시뮬레이션 · 구현 사례 · LLM vs 월드 모델 비교' },
+  'token-embedding':       { component: TokenEmbeddingDiagram,     title: '토큰 임베딩과 위치 인코딩',  subtitle: '2D 벡터 공간 시각화 · 의미 연산 · RoPE/사인파 비교' },
+  'llm-wiki':              { component: LlmWikiDiagram,            title: 'LLM Wiki 지식 그래프',      subtitle: 'AI 능동적 연결·요약·인덱싱 · RAG vs Wiki 비교' },
+  'function-calling':      { component: FunctionCallingDiagram,    title: '함수 호출(Function Calling)', subtitle: '6단계 흐름 · JSON 스키마 · 활용 사례 · ReAct와 차이' },
 };
 
 export default function DiagramRenderer({ type }) {

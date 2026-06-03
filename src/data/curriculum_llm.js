@@ -147,7 +147,7 @@ print(len(tokens))  # 5개 토큰
       {
         id: "llm2-2", title: "2-2 한국어 토큰화의 한계",
         duration: "20분", difficulty: 2,
-        diagramType: "bpe-tokenization",
+        diagramType: "korean-token",
         content: `
 <h2>한국어는 왜 토큰을 더 많이 소비하나?</h2>
 <div class="highlight-box">
@@ -245,7 +245,7 @@ loader  = DataLoader(dataset, batch_size=32, shuffle=True)
       {
         id: "llm4-1", title: "4-1 토큰 임베딩: 의미를 벡터로",
         duration: "25분", difficulty: 3,
-        diagramType: "prompt-flow",
+        diagramType: "token-embedding",
         content: `
 <h2>임베딩: 토큰 ID → 의미 벡터</h2>
 <p>토큰 ID(정수)를 <strong>고차원 밀집 벡터</strong>로 변환합니다. 비슷한 의미의 단어는 벡터 공간에서 가깝게 위치합니다.</p>
@@ -276,7 +276,7 @@ vectors = embedding(token_ids)
       {
         id: "llm4-2", title: "4-2 위치 인코딩: 순서를 벡터에",
         duration: "20분", difficulty: 3,
-        diagramType: "transformer-arch",
+        diagramType: "token-embedding",
         content: `
 <h2>왜 위치 인코딩이 필요한가?</h2>
 <p>트랜스포머의 어텐션은 위치 개념이 없습니다. "cat sat on mat"과 "mat on sat cat"을 구별 못합니다. 위치 인코딩으로 순서 정보를 추가합니다.</p>
@@ -797,7 +797,7 @@ prompt = f"Context: {context}\\n\\nQ: {query}\\nA:"
       {
         id: "llm11-2", title: "11-2 RAG의 구조적 한계",
         duration: "20분", difficulty: 4,
-        diagramType: "rag-pipeline",
+        diagramType: "rag-limits",
         content: `
 <h2>RAG의 구조적 문제들</h2>
 <div class="highlight-box">
@@ -841,7 +841,7 @@ GraphRAG: 개체 간 관계 그래프 + 지식 커뮤니티
       {
         id: "llm12-1", title: "12-1 AI 지식 그래프 구축",
         duration: "30분", difficulty: 4,
-        diagramType: "rag-pipeline",
+        diagramType: "llm-wiki",
         content: `
 <h2>단순 저장 vs 능동적 지식 연결</h2>
 <div class="highlight-box">
@@ -958,7 +958,7 @@ CrewAI:
       {
         id: "llm14-1", title: "14-1 Function Calling 구현",
         duration: "30분", difficulty: 4,
-        diagramType: "react-agent",
+        diagramType: "function-calling",
         content: `
 <h2>LLM이 API를 직접 호출한다</h2>
 <div class="highlight-box">
@@ -1218,7 +1218,7 @@ MLP + LLM 함께 미세 조정
       {
         id: "llm18-1", title: "18-1 월드 모델: 행동 결과 예측",
         duration: "30분", difficulty: 5,
-        diagramType: "neural-network",
+        diagramType: "world-model",
         content: `
 <h2>텍스트 패턴 인식을 넘어서</h2>
 <div class="highlight-box">

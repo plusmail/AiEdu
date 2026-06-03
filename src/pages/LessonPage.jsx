@@ -189,7 +189,14 @@ export default function LessonPage({ isLessonCompleted, completeLesson, getOpenC
                 {module.chapId} · {chapFileList.length}개
               </span>
             </div>
-            <span className="text-xs text-gray-400">파일 선택 후 실습</span>
+            <a
+              href="https://www.booksr.co.kr/product/opencv-python%EC%9C%BC%EB%A1%9C-%EB%B0%B0%EC%9A%B0%EB%8A%94-%EC%98%81%EC%83%81%EC%B2%98%EB%A6%AC-%EB%B0%8F-%EC%9D%91%EC%9A%A9/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs text-gray-400 hover:text-emerald-600 transition-colors flex items-center gap-1"
+            >
+              출처: OpenCV-Python 영상처리 프로그래밍, 황선규 저, 성안당 — 출판사 공개 예제 소스 ↗
+            </a>
           </div>
 
           {/* 파일 선택 드롭다운 */}
